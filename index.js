@@ -180,7 +180,7 @@ const loadButton = document.getElementById("load_button");
 const list = document.getElementById("old_comics_list");
 let loaded = 0;
 function loadMoreComics() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 4; i++) {
         loaded++;
         const c = comics.length - loaded;
         if (c < 0) break;
@@ -192,7 +192,7 @@ function loadMoreComics() {
         header.href = link;
         header.style.fontSize = "25px";
         listItem.appendChild(header);
-        listItem.appendChild(document.createElement("br"))
+        listItem.appendChild(document.createElement("br"));
         const image = document.createElement("img");
         image.src = link;
         image.alt = getDateString(getDateFromLink(link));
