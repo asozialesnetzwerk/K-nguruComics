@@ -100,8 +100,14 @@ const oldLinkRegex =/https?:\/\/img\.zeit\.de\/administratives\/kaenguru-comics\
 const firstDateWithNewLink = getDateBy(2021, 1, 19);
 const newLinkRegex = /https?:\/\/img\.zeit\.de\/administratives\/kaenguru-comics\/(\d{4})-(\d{2})\/(\d{2})\/original\/?/;
 
+const relativeLinkRegex = /img\/(\d{4})-(\d{1,2})-(\d{1,2})\.jpg/;
+
 function getDateFromLink(link) {
     let arr = link.toLowerCase().match(newLinkRegex);
+    if (arr && arr.length > 3) {
+        return getDateBy(arr[1], arr[2], arr[3]);
+    }
+    arr = link.toLowerCase().match(relativeLinkRegex);
     if (arr && arr.length > 3) {
         return getDateBy(arr[1], arr[2], arr[3]);
     }
