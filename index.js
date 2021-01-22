@@ -9,8 +9,10 @@ function addLinksToComics() {
     const today = getToday();
     const date = new Date(firstDateWithNewLink.getTime());
     while (date.getTime() < today.getTime()) {
+        console.log(date);
         if (!isSunday()) {
             comics.push(generateComicLink(date));
+            console.log(generateComicLink(date));
         }
         dateIncreaseByDays(date, 1);
     }
@@ -113,8 +115,7 @@ function getDateFromLink(link) {
             : date;
     }
 
-    console.log(link);
-    switch(link.toLowerCase()) {
+    switch(link.toLowerCase().trim()) {
         case "https://img.zeit.de/administratives/kaenguru-comics/pilot-kaenguru/original":
             return getDateBy(2020, 11, 29);
         case "https://img.zeit.de/administratives/kaenguru-comics/pow-kaenguru/original":
@@ -140,12 +141,20 @@ function generateComicLink(date) {
 }
 
 function isSunday(date) {
-    return date && date.getDay() === 0 && date !== getDateBy(2020, 12, 20);
+    return date
+        && date.getDay() === 0
+        && !dateEquals(date,2020, 12, 20);
+}
+
+function dateEquals(date, year, month, dayOfMonth) {
+    return date.getFullYear() === year
+        && date.getMonth() === month - 1
+        && date.getDate() === dayOfMonth;
 }
 
 const millisOfOneDay = 1000 * 60 * 60 * 24;
 function dateIncreaseByDays(date, days) {
-    date.setTime(date.getTime() + days * millisOfOneDay);
+    date.setTime(date.getTime() + (days * millisOfOneDay));
     return date;
 }
 
@@ -162,7 +171,7 @@ function getToday() {
 const list = document.getElementById("old_comics_list");
 let loaded = 0;
 function loadMoreComics() {
-    if (loaded === comics.length) {
+    if (loaded >= comics.length) {
         alert("Keine Comics mehr da.");
     }
 
@@ -174,8 +183,6 @@ function loadMoreComics() {
         const link = comics[c];
         const listItem = document.createElement("li");
         const header = document.createElement("h2");
-        console.log(getDateFromLink(link));
-        console.log(link);
         header.innerText = getDateString(getDateFromLink(link));
         listItem.appendChild(header);
         const image = document.createElement("img");
