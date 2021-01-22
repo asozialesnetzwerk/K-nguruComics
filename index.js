@@ -31,8 +31,10 @@ function onLoad() {
 }
 
 function setCurrentComic(date) {
-    currentImg.src = generateComicLink(date);
+    let link = generateComicLink(date);
+    currentImg.src = link;
     currentImgHeader.innerText = "Aktueller " + getDateString(date);
+    currentImgHeader.href = link;
 }
 
 function getDateString(date) {
@@ -168,13 +170,10 @@ function getToday() {
     return getDateBy(date.getFullYear(), date.getMonth() + 1, date.getDate());
 }
 
+const loadButton = document.getElementById("load_button");
 const list = document.getElementById("old_comics_list");
 let loaded = 0;
 function loadMoreComics() {
-    if (loaded >= comics.length) {
-        alert("Keine Comics mehr da.");
-    }
-
     for (let i = 0; i < 10; i++) {
         loaded++;
         const c = comics.length - loaded;
@@ -182,15 +181,33 @@ function loadMoreComics() {
 
         const link = comics[c];
         const listItem = document.createElement("li");
-        const header = document.createElement("h2");
+        const header = document.createElement("a");
         header.innerText = getDateString(getDateFromLink(link));
+        header.href = link;
+        header.style.fontSize = "25px";
         listItem.appendChild(header);
+        listItem.appendChild(document.createElement("br"))
         const image = document.createElement("img");
         image.src = link;
         image.alt = getDateString(getDateFromLink(link));
         image.style.width = "40%";
         image.style.height = "auto";
+        image.style.maxHeight = "100%";
+        image.onmouseover = () => {
+            image.style.width = "60%";
+        }
+        image.onclick = () => {
+            image.style.width = "100%";
+        }
+        image.onmouseleave = () => {
+            image.style.width = "40%";
+        }
         listItem.appendChild(image);
         list.appendChild(listItem);
+    }
+
+    if (loaded >= comics.length) {
+        loadButton.style.opacity = "0";
+        loadButton.style.visibility = "invisible";
     }
 }
