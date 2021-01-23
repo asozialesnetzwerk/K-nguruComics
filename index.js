@@ -28,6 +28,12 @@ function onLoad() {
         dateIncreaseByDays(today, -1);
         setCurrentComic(today);
     };
+    currentImg.onclick = () => {
+        currentImg.style.width = "100%";
+    }
+    currentImg.onmouseleave = () => {
+        currentImg.style.width = "60%";
+    }
 }
 
 function setCurrentComic(date) {
