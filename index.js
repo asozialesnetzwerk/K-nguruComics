@@ -45,7 +45,7 @@ function setCurrentComic(date) {
 
 function getDateString(date) {
     return "Comic von "
-        + getDayName(date) +" dem "
+        + getDayName(date) + ", dem "
         + date.getDate() + ". "
         + getMonthName(date) + " "
         + date.getFullYear() + ".";
