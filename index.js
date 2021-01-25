@@ -9,11 +9,7 @@ function addLinksToComics() {
     const today = getToday();
     const date = new Date(firstDateWithNewLink.getTime());
     while (date.getTime() < today.getTime()) {
-        console.log(date);
-        if (!isSunday()) {
-            comics.push(generateComicLink(date));
-            console.log(generateComicLink(date));
-        }
+        comics.push(generateComicLink(date));
         dateIncreaseByDays(date, 1);
     }
 }
@@ -22,11 +18,14 @@ const currentImgHeader = document.getElementById("current_comic_header");
 const currentImg = document.getElementById("current-img");
 function onLoad() {
     const today = getToday();
-    if (isSunday(today)) dateIncreaseByDays(today, -1);
     setCurrentComic(today)
     currentImg.onerror = (event) => {
         dateIncreaseByDays(today, -1);
         setCurrentComic(today);
+
+        if (loaded < comicCountToLoadOnCLick) {
+            loaded++;
+        }
     };
     currentImg.onclick = () => {
         currentImg.style.width = "100%";
@@ -173,7 +172,7 @@ function dateIncreaseByDays(date, days) {
 }
 
 function getDateBy(year, month, dayOfMonth) {
-    return new Date(year, month - 1, dayOfMonth, 0, 0, 0, 0);
+    return new Date(year, month - 1, dayOfMonth, 6, 0, 0, 0);
 
 }
 
@@ -182,11 +181,12 @@ function getToday() {
     return getDateBy(date.getFullYear(), date.getMonth() + 1, date.getDate());
 }
 
+const comicCountToLoadOnCLick = 7;
 const loadButton = document.getElementById("load_button");
 const list = document.getElementById("old_comics_list");
 let loaded = 0;
 function loadMoreComics() {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < comicCountToLoadOnCLick; i++) {
         loaded++;
         const c = comics.length - loaded;
         if (c < 0) break;
@@ -213,6 +213,9 @@ function loadMoreComics() {
         }
         image.onmouseleave = () => {
             image.style.width = "40%";
+        }
+        image.onerror = () => {
+            list.removeChild(listItem);
         }
         listItem.appendChild(image);
         list.appendChild(listItem);
