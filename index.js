@@ -38,7 +38,7 @@ function onLoad() {
 function setCurrentComic(date) {
     let link = generateComicLink(date);
     currentImg.src = link;
-    currentImgHeader.innerText = "Aktueller " + getDateString(date);
+    currentImgHeader.innerText = "Aktueller " + getDateString(date) + ":";
     currentImgHeader.href = link;
 }
 
@@ -47,7 +47,7 @@ function getDateString(date) {
         + getDayName(date) + ", dem "
         + date.getDate() + ". "
         + getMonthName(date) + " "
-        + date.getFullYear() + ".";
+        + date.getFullYear();
 }
 
 function getDayName(date) {
@@ -192,16 +192,18 @@ function loadMoreComics() {
         if (c < 0) break;
 
         const link = comics[c];
+        const date = getDateFromLink(link);
+
         const listItem = document.createElement("li");
-        const header = document.createElement("a");
-        header.innerText = getDateString(getDateFromLink(link));
+        const header = document.createElement("a") ;
+        header.innerText = getDateString(date) + ":";
         header.href = link;
         header.style.fontSize = "25px";
         listItem.appendChild(header);
         listItem.appendChild(document.createElement("br"));
         const image = document.createElement("img");
         image.src = link;
-        image.alt = getDateString(getDateFromLink(link));
+        image.alt = getDateString(date);
         image.style.width = "40%";
         image.style.height = "auto";
         image.style.maxHeight = "100%";
@@ -215,7 +217,11 @@ function loadMoreComics() {
             image.style.width = "40%";
         }
         image.onerror = () => {
-            list.removeChild(listItem);
+            if (isSunday(date)) {
+                list.removeChild(listItem);
+            } else {
+                listItem.append(" konnte nicht geladen werden.");
+            }
         }
         listItem.appendChild(image);
         list.appendChild(listItem);
