@@ -8,7 +8,7 @@ fetch("links.txt").then(x => x.text()).then(links => {
 function addLinksToComics() {
     const today = getToday();
     const date = new Date(firstDateWithNewLink.getTime());
-    while (date.getTime() < today.getTime()) {
+    while (date.getTime() <= today.getTime()) {
         comics.push(generateComicLink(date));
         dateIncreaseByDays(date, 1);
     }
@@ -17,7 +17,7 @@ function addLinksToComics() {
 const currentImgHeader = document.getElementById("current_comic_header");
 const currentImg = document.getElementById("current-img");
 function onLoad() {
-    const today = getToday();
+    const today = dateIncreaseByDays(getToday(), 1);
     setCurrentComic(today)
     currentImg.onerror = (event) => {
         dateIncreaseByDays(today, -1);
@@ -70,7 +70,6 @@ function getDayName(date) {
 }
 
 function getMonthName(date) {
-
     switch (date.getMonth()) {
         case 0:
             return "Januar";
