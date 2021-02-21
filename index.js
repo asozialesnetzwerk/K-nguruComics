@@ -27,12 +27,6 @@ function onLoad() {
             loaded++;
         }
     };
-    currentImg.onclick = () => {
-        currentImg.style.width = "100%";
-    }
-    currentImg.onmouseleave = () => {
-        currentImg.style.width = "60%";
-    }
 }
 
 function setCurrentComic(date) {
@@ -207,11 +201,11 @@ function loadMoreComics() {
         image.style.height = "auto";
         image.style.maxHeight = "100%";
         image.onmouseover = () => {
-          var rm = document.getElementsByClassName("clone")
+          let rm = document.getElementsByClassName("clone")
           while(rm[0]) {
             rm[0].parentNode.removeChild(rm[0]);
           }
-          var clone = image.cloneNode(true);
+          let clone = image.cloneNode(true);
           clone.style.width = "100%";
           clone.style.position = "absolute";
           clone.style.left = "0";
