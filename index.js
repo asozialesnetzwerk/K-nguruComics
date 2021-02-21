@@ -174,6 +174,8 @@ function getToday() {
     return getDateBy(date.getFullYear(), date.getMonth() + 1, date.getDate());
 }
 
+const bigImgSize = "100%";
+const smallImgSize = "64%";
 const comicCountToLoadOnCLick = 7;
 const loadButton = document.getElementById("load_button");
 const list = document.getElementById("old_comics_list");
@@ -195,38 +197,25 @@ function loadMoreComics() {
         listItem.appendChild(header);
         listItem.appendChild(document.createElement("br"));
         const image = document.createElement("img");
+        image.classList.add("normal-img")
         image.src = link;
         image.alt = getDateString(date);
-        //image.style.width = "40%";
-        image.style.height = "auto";
-        image.style.maxHeight = "100%";
         image.onmouseover = () => {
-          let rm = document.getElementsByClassName("clone")
-          while(rm[0]) {
-            rm[0].parentNode.removeChild(rm[0]);
-          }
-          let clone = image.cloneNode(true);
-          clone.style.width = "100%";
-          clone.style.position = "absolute";
-          clone.style.left = "0";
-          clone.style.zIndex = "1";
-          clone.classList.add("clone");
-          clone.onmouseleave = () => {
-            clone.remove();
-          }
-          listItem.appendChild(clone);
+          createClone(image, listItem, smallImgSize);
         }
         image.onclick = () => {
-            var rm = document.getElementsByClassName("clone")
-            while(rm[0]) {
-              rm[0].parentNode.removeChild(rm[0]);
+            let hasBigClone = false;
+            for (let node of listItem.children) {
+                if (node.classList.contains("clone") && node.style.maxWidth === bigImgSize) {
+                    hasBigClone = true;
+                }
             }
-            var clone = image.cloneNode(true);
-            clone.style.width = "100%";
-            clone.style.position = "absolute";
-            clone.style.left = "0";
-            clone.classList.add("clone");
-            listItem.appendChild(clone);
+
+            if (hasBigClone) {
+                createClone(image, listItem, smallImgSize);
+            } else {
+                createClone(image, listItem, bigImgSize);
+            }
         }
         image.onerror = () => {
             if (isSunday(date)) {
@@ -243,4 +232,27 @@ function loadMoreComics() {
         loadButton.style.opacity = "0";
         loadButton.style.visibility = "invisible";
     }
+}
+
+function removeAllClones() {
+    const rm = document.getElementsByClassName("clone")
+    while (rm[0]) {
+        rm[0].parentNode.removeChild(rm[0]);
+    }
+}
+
+function createClone(image, listItem, width) {
+    removeAllClones();
+    // create new clone
+    const clone = image.cloneNode(true);
+    clone.style.maxWidth = width;
+    clone.classList.add("clone");
+    clone.classList.remove("normal-img");
+    clone.onmouseleave = () => {
+        clone.remove();
+    }
+    clone.onmousedown = () => {
+        clone.style.maxWidth = clone.style.maxWidth === bigImgSize ? smallImgSize : bigImgSize;
+    }
+    listItem.appendChild(clone);
 }
