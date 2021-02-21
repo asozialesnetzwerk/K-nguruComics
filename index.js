@@ -27,12 +27,6 @@ function onLoad() {
             loaded++;
         }
     };
-    currentImg.onclick = () => {
-        currentImg.style.width = "100%";
-    }
-    currentImg.onmouseleave = () => {
-        currentImg.style.width = "60%";
-    }
 }
 
 function setCurrentComic(date) {
@@ -203,17 +197,36 @@ function loadMoreComics() {
         const image = document.createElement("img");
         image.src = link;
         image.alt = getDateString(date);
-        image.style.width = "40%";
+        //image.style.width = "40%";
         image.style.height = "auto";
         image.style.maxHeight = "100%";
         image.onmouseover = () => {
-            image.style.width = "60%";
+          let rm = document.getElementsByClassName("clone")
+          while(rm[0]) {
+            rm[0].parentNode.removeChild(rm[0]);
+          }
+          let clone = image.cloneNode(true);
+          clone.style.width = "100%";
+          clone.style.position = "absolute";
+          clone.style.left = "0";
+          clone.style.zIndex = "1";
+          clone.classList.add("clone");
+          clone.onmouseleave = () => {
+            clone.remove();
+          }
+          listItem.appendChild(clone);
         }
         image.onclick = () => {
-            image.style.width = "100%";
-        }
-        image.onmouseleave = () => {
-            image.style.width = "40%";
+            var rm = document.getElementsByClassName("clone")
+            while(rm[0]) {
+              rm[0].parentNode.removeChild(rm[0]);
+            }
+            var clone = image.cloneNode(true);
+            clone.style.width = "100%";
+            clone.style.position = "absolute";
+            clone.style.left = "0";
+            clone.classList.add("clone");
+            listItem.appendChild(clone);
         }
         image.onerror = () => {
             if (isSunday(date)) {
