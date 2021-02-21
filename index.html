@@ -5,15 +5,19 @@
     <title>Känguru Comics</title>
 </head>
 <body>
-    <div>
+  <noscript>
+    Da diese Seite die Comics direkt von zeit.de holt, ist javascript notwending.
+  </noscript>
+    <main>
         <h1><a id="current_comic_header">Aktueller Comic:</a></h1>
-        <img width="60%" height="auto" style="margin: 0 auto" id="current-img" alt="Aktueller Comic" src="">
+        <img style="margin: 0 auto" id="current-img" alt="Aktueller Comic" src="">
         <h1>Alte Comics:</h1>
         <ul id="old_comics_list">
 
         </ul>
         <input id="load_button" type="button" value="Lade mehr Comics!" onclick="loadMoreComics()" style="font-size: 23px; width: 80% ">
-    </div>
+    </main>
     <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
 </body>
 </html>

@@ -203,17 +203,33 @@ function loadMoreComics() {
         const image = document.createElement("img");
         image.src = link;
         image.alt = getDateString(date);
-        image.style.width = "40%";
+        //image.style.width = "40%";
         image.style.height = "auto";
         image.style.maxHeight = "100%";
         image.onmouseover = () => {
-            image.style.width = "60%";
+          var rm = document.getElementsByClassName("clone")
+          while(rm[0]) {
+            rm[0].parentNode.removeChild(rm[0]);
+          }
+          var clone = image.cloneNode(true);
+          clone.style.width = "100%";
+          clone.style.position = "absolute";
+          clone.style.left = "0";
+          clone.style.zIndex = "1";
+          clone.classList.add("clone");
+          listItem.appendChild(clone);
         }
         image.onclick = () => {
-            image.style.width = "100%";
-        }
-        image.onmouseleave = () => {
-            image.style.width = "40%";
+            var rm = document.getElementsByClassName("clone")
+            while(rm[0]) {
+              rm[0].parentNode.removeChild(rm[0]);
+            }
+            var clone = image.cloneNode(true);
+            clone.style.width = "100%";
+            clone.style.position = "absolute";
+            clone.style.left = "0";
+            clone.classList.add("clone");
+            listItem.appendChild(clone);
         }
         image.onerror = () => {
             if (isSunday(date)) {
