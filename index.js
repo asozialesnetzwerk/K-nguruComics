@@ -217,6 +217,9 @@ function loadMoreComics() {
           clone.style.left = "0";
           clone.style.zIndex = "1";
           clone.classList.add("clone");
+          clone.onmouseleave = () => {
+            clone.remove();
+          }
           listItem.appendChild(clone);
         }
         image.onclick = () => {
