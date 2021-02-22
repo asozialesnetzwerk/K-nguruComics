@@ -14,7 +14,7 @@ function addLinksToComics() {
     }
 }
 
-const currentImgHeader = document.getElementById("current_comic_header");
+const currentImgHeader = document.getElementById("current-comic-header");
 const currentImg = document.getElementById("current-img");
 function onLoad() {
     const today = dateIncreaseByDays(getToday(), 1);
@@ -29,11 +29,16 @@ function onLoad() {
     };
 }
 
+//const currentImgContainer = document.getElementById("current-img-container");
 function setCurrentComic(date) {
     let link = generateComicLink(date);
     currentImg.src = link;
     currentImgHeader.innerText = "Aktueller " + getDateString(date) + ":";
     currentImgHeader.href = link;
+    //TODO:
+    //currentImg.onclick = () => {
+    //    createImgPopup(currentImg, currentImgContainer);
+    //}
 }
 
 function getDateString(date) {
@@ -173,12 +178,9 @@ function getToday() {
     const date = new Date();
     return getDateBy(date.getFullYear(), date.getMonth() + 1, date.getDate());
 }
-
-const bigImgSize = "100%";
-const smallImgSize = "64%";
 const comicCountToLoadOnCLick = 7;
-const loadButton = document.getElementById("load_button");
-const list = document.getElementById("old_comics_list");
+const loadButton = document.getElementById("load-button");
+const list = document.getElementById("old-comics-list");
 let loaded = 0;
 function loadMoreComics() {
     for (let i = 0; i < comicCountToLoadOnCLick; i++) {
@@ -200,22 +202,8 @@ function loadMoreComics() {
         image.classList.add("normal-img")
         image.src = link;
         image.alt = getDateString(date);
-        image.onmouseover = () => {
-          createClone(image, listItem, smallImgSize);
-        }
         image.onclick = () => {
-            let hasBigClone = false;
-            for (let node of listItem.children) {
-                if (node.classList.contains("clone") && node.style.maxWidth === bigImgSize) {
-                    hasBigClone = true;
-                }
-            }
-
-            if (hasBigClone) {
-                createClone(image, listItem, smallImgSize);
-            } else {
-                createClone(image, listItem, bigImgSize);
-            }
+            createImgPopup(image);
         }
         image.onerror = () => {
             if (isSunday(date)) {
@@ -234,25 +222,34 @@ function loadMoreComics() {
     }
 }
 
-function removeAllClones() {
-    const rm = document.getElementsByClassName("clone")
-    while (rm[0]) {
-        rm[0].parentNode.removeChild(rm[0]);
+function removeAllPopups() {
+    for (let node of document.getElementsByClassName("popup-container")) {
+        node.remove();
     }
 }
 
-function createClone(image, listItem, width) {
-    removeAllClones();
-    // create new clone
+function createImgPopup(image) {
+    removeAllPopups();
+
+    const popupContainer = document.createElement("div");
+    popupContainer.classList.add("popup-container");
+    popupContainer.onmouseleave = () => {
+        popupContainer.remove();
+    }
+    popupContainer.onclick = () => {
+        removeAllPopups();
+    }
+
     const clone = image.cloneNode(true);
-    clone.style.maxWidth = width;
-    clone.classList.add("clone");
     clone.classList.remove("normal-img");
-    clone.onmouseleave = () => {
-        clone.remove();
-    }
-    clone.onmousedown = () => {
-        clone.style.maxWidth = clone.style.maxWidth === bigImgSize ? smallImgSize : bigImgSize;
-    }
-    listItem.appendChild(clone);
+    clone.classList.add("popup-img");
+
+
+    const closeButton = document.createElement("img");
+    closeButton.classList.add("close-button");
+    closeButton.src = "img/close.svg";
+
+    popupContainer.appendChild(clone);
+    popupContainer.appendChild(closeButton);
+    image.parentNode.appendChild(popupContainer);
 }
