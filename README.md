@@ -1,5 +1,5 @@
 # KaenguruComics
 
-Eine Webapp, die die Känguru Comics von zeit.de auf einer seite darstellt
+Eine webseite, die die Känguru-Comics von zeit.de auf einer Seite zeigt.
 
 https://asozialesnetzwerk.github.io/KaenguruComics
