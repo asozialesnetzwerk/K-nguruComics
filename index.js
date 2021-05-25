@@ -7,7 +7,7 @@ fetch("links.txt").then(x => x.text()).then(links => {
 
 function addLinksToComics() {
     const today = getToday();
-    const date = new Date(firstDateWithNewLink.getTime());
+    const date = copyDate(firstDateWithNewLink);
     while (date.getTime() <= today.getTime()) {
         comics.push(generateComicLink(date));
         dateIncreaseByDays(date, 1);
@@ -139,11 +139,21 @@ function getDateFromLink(link) {
             return getDateBy(2020, 12, 2);
         case "https://img.zeit.de/administratives/2020-12/kaenguru-comics-kaenguru-019/original":
             return getDateBy(2020, 12, 19);
+        case comic_25_5_2021:
+            return date_25_5_2021;
     }
 }
 
+// date with special link format:
+const comic_25_5_2021 = "https://img.zeit.de/administratives/kaenguru-comics/25/original/";
+const date_25_5_2021 = getDateBy(2021, 5, 25);
+
 const linkFormat = "https://img.zeit.de/administratives/kaenguru-comics/%y-%m/%d/original"
 function generateComicLink(date) {
+    if (datesEqual(date, date_25_5_2021)) {
+        return comic_25_5_2021;
+    }
+
     let month = (date.getMonth() + 1).toString();
     let day = date.getDate().toString();
     return linkFormat.replace("%y", date.getFullYear().toString())
@@ -157,6 +167,10 @@ function isSunday(date) {
         && !dateEquals(date,2020, 12, 20);
 }
 
+function datesEqual(date1, date2) {
+    return dateEquals(date1, date2.getFullYear(), date2.getMonth() + 1, date2.getDate());
+}
+
 function dateEquals(date, year, month, dayOfMonth) {
     return date.getFullYear() === year
         && date.getMonth() === month - 1
@@ -166,7 +180,12 @@ function dateEquals(date, year, month, dayOfMonth) {
 const millisOfOneDay = 1000 * 60 * 60 * 24;
 function dateIncreaseByDays(date, days) {
     date.setTime(date.getTime() + (days * millisOfOneDay));
+    date.setHours(6); // to compensate errors through daylight savings time
     return date;
+}
+
+function copyDate(date) {
+    return getDateBy(date.getFullYear(), date.getMonth() + 1, date.getDate());
 }
 
 function getDateBy(year, month, dayOfMonth) {
@@ -175,8 +194,7 @@ function getDateBy(year, month, dayOfMonth) {
 }
 
 function getToday() {
-    const date = new Date();
-    return getDateBy(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    return copyDate(new Date());
 }
 const comicCountToLoadOnCLick = 7;
 const loadButton = document.getElementById("load-button");
