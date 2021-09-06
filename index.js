@@ -147,11 +147,16 @@ function getDateFromLink(link) {
 // date with special link format:
 const comic_25_5_2021 = "https://img.zeit.de/administratives/kaenguru-comics/25/original/";
 const date_25_5_2021 = getDateBy(2021, 5, 25);
+const comic_06_09_2021 = "https://img.zeit.de/administratives/kaenguru-comics/2021-09/6/original";
+const date_06_09_2021 = getDateBy(2021, 9, 6);
 
 const linkFormat = "https://img.zeit.de/administratives/kaenguru-comics/%y-%m/%d/original"
 function generateComicLink(date) {
     if (datesEqual(date, date_25_5_2021)) {
         return comic_25_5_2021;
+    }
+    if (datesEqual(date, date_06_09_2021)) {
+        return comic_06_09_2021;
     }
 
     let month = (date.getMonth() + 1).toString();
