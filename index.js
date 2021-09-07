@@ -141,13 +141,15 @@ function getDateFromLink(link) {
             return getDateBy(2020, 12, 19);
         case comic_25_5_2021:
             return date_25_5_2021;
+        case comic_06_09_2021:
+            return date_06_09_2021;
     }
 }
 
 // date with special link format:
 const comic_25_5_2021 = "https://img.zeit.de/administratives/kaenguru-comics/25/original/";
 const date_25_5_2021 = getDateBy(2021, 5, 25);
-const comic_06_09_2021 = "https://img.zeit.de/administratives/kaenguru-comics/2021-09/6/original";
+const comic_06_09_2021 = "https://img.zeit.de/administratives/kaenguru-comics/2021-09/6/original/";
 const date_06_09_2021 = getDateBy(2021, 9, 6);
 
 const linkFormat = "https://img.zeit.de/administratives/kaenguru-comics/%y-%m/%d/original"
